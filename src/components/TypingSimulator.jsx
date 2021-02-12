@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import '../css/tt-sim.css'
+import TextEditor from './TextEditor';
 
 /*
     Родительский компонент
@@ -80,7 +81,7 @@ class TypingSimulator extends React.Component {
     render() {
         return (
             <div className="simulator">
-                {this.state.text}
+                <TextEditor value={this.state.text}/>
             </div>
         )
     }

@@ -20,7 +20,7 @@ class TextEditor extends React.Component{
 
         return (
             <div>
-
+                {this.props.value}
             </div>
         )
     }
