@@ -1,11 +1,13 @@
 import './css/bootstrap-grid.min.css';
-import './App.css';
+import './css/App.css';
+
+import TypingSimulator from './components/TypingSimulator';
 
 
 function App() {
   return (
     <div className="container">
-      <div>hello world</div>
+      <TypingSimulator />
     </div>
   );
 }
