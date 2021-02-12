@@ -14,7 +14,7 @@ class AccuracyIndicator extends React.Component{
 
         return (
             <div>
-
+                
             </div>
         )
     }
