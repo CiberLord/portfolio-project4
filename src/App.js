@@ -1,13 +1,15 @@
-import './css/bootstrap-grid.min.css';
 import './css/App.css';
 
 import TypingSimulator from './components/TypingSimulator';
+import Header from './components/Header';
 
 
 function App() {
   return (
-    <div className="container">
+    <div>
+      <Header />
       <TypingSimulator />
+      
     </div>
   );
 }

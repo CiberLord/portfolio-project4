@@ -14,9 +14,9 @@ class AccuracyIndicator extends React.Component{
     render(){
 
         return (
-            <div>
-                <p>точность</p>
+            <div className="accuracy">
                 <div>{this.props.value}%</div>
+                <p className="accuracy-icon">точность</p>
             </div>
         )
     }

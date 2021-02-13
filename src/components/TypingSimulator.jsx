@@ -5,9 +5,9 @@ import axios from 'axios';
 import '../css/simulator.css'
 import TextEditor from './TextEditor';
 import AccuracyIndicator from './AccuracyIndicator';
+import SpeedIndicator from './SpeedIndicator';
 
 /*
-    Родительский компонент
     именно тут будет храниться все основные состояния приложения
         - измерение скорости печати
         - показание вводимого текста в реальном времени
@@ -27,15 +27,15 @@ class TypingSimulator extends React.Component {
             nextChars: '',//не введенные символы
             correct: 100
         }
-        this.index=0;//позиция курсора
-        this.errorCount=0;
-        this.corrected=true;
+        this.index = 0;//позиция курсора
+        this.errorCount = 0;
+        this.corrected = true;
         this.onKeyHandle = this.onKeyHandle.bind(this);
 
     }
 
-     // метод вызывается при правильном вводе символа: переводит курсор на следующий символ
-     ifCorrectSymbol() {
+    // метод вызывается при правильном вводе символа: переводит курсор на следующий символ
+    ifCorrectSymbol() {
         this.setState({
             prevChars: this.state.text.slice(0, this.index),
             currentChar: this.state.text.charAt(this.index),
@@ -49,17 +49,17 @@ class TypingSimulator extends React.Component {
     onKeyHandle(event) {
 
         if (event.key === this.state.currentChar) {
-            this.corrected=true;
+            this.corrected = true;
             this.ifCorrectSymbol(this.props.value);
         } else if (event.key !== 'Shift') {
 
             //подсчет количества ошибок
-            if(this.corrected){
-                this.corrected=false;
+            if (this.corrected) {
+                this.corrected = false;
                 this.errorCount++;
-                let p=(this.errorCount*100/this.state.text.length);
+                let p = (this.errorCount * 100 / this.state.text.length);
                 this.setState({
-                    correct:(100-p).toFixed(2)
+                    correct: (100 - p).toFixed(2)
                 })
             }
 
@@ -68,7 +68,7 @@ class TypingSimulator extends React.Component {
             })
         }
     }
-    
+
     // генератор случайного текста
     generateText() {
 
@@ -107,15 +107,15 @@ class TypingSimulator extends React.Component {
         }
     }
 
-    restart(target){
+    restart(target) {
 
         // показать окно старта 
         //сгенериовать текст
-        this.index=0;
+        this.index = 0;
         this.generateText();
         target.blur();
     }
-    
+
 
     componentDidMount() {
         this.generateText(); //генерация случайного текста
@@ -125,17 +125,19 @@ class TypingSimulator extends React.Component {
     render() {
         return (
             <div className="simulator">
-                <TextEditor 
+                <TextEditor
                     prevChars={this.state.prevChars}
                     currentChar={this.state.currentChar}
                     nextChars={this.state.nextChars}
                     cursorClass={this.state.cursorClass}
                 />
                 <div className="control">
-                    <div className="start">
-                        <button onClick={(event)=>this.restart(event.target)}>Заново</button>
+                    <div className="restart">
+                        <i className="restart-icon"></i>
+                        <button onClick={(event) => this.restart(event.target)}></button>
                     </div>
                     <AccuracyIndicator value={this.state.correct} />
+                    <SpeedIndicator value={0}/>
                 </div>
             </div>
         )

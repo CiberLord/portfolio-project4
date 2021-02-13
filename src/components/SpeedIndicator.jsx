@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import '../css/simulator.css'
 
 
 /**
@@ -14,8 +15,9 @@ class SpeedIndicator extends React.Component{
     render(){
 
         return (
-            <div>
-
+            <div className="accuracy">
+                <div>{this.props.value}<span className="cl">симв/мин</span></div>
+                <p className="speed-icon">скорость</p>
             </div>
         )
     }
