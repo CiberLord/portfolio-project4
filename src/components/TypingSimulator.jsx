@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import '../css/simulator.css'
 import TextEditor from './TextEditor';
+import AccuracyIndicator from './AccuracyIndicator';
 
 /*
     Родительский компонент
@@ -20,22 +21,60 @@ class TypingSimulator extends React.Component {
 
         this.state = {
             text: '',//полученный текст
-            language: 'English',//язык текста
+            language: 'Russian',//язык текстаs
+            currentChar: '',//символ который нужно ввести(положение курсора)
+            prevChars: '',//введенные символы
+            nextChars: '',//не введенные символы
+            correct: 100
+        }
+        this.index=0;//позиция курсора
+        this.errorCount=0;
+        this.corrected=true;
+        this.onKeyHandle = this.onKeyHandle.bind(this);
+
+    }
+
+     // метод вызывается при правильном вводе символа: переводит курсор на следующий символ
+     ifCorrectSymbol() {
+        this.setState({
+            prevChars: this.state.text.slice(0, this.index),
+            currentChar: this.state.text.charAt(this.index),
+            nextChars: this.state.text.slice(this.index + 1),
+            cursorClass: 'correct-cursor'
+        });
+        this.index++;
+    }
+
+    // обработка клавиатурного ввода-
+    onKeyHandle(event) {
+
+        if (event.key === this.state.currentChar) {
+            this.corrected=true;
+            this.ifCorrectSymbol(this.props.value);
+        } else if (event.key !== 'Shift') {
+
+            //подсчет количества ошибок
+            if(this.corrected){
+                this.corrected=false;
+                this.errorCount++;
+                let p=(this.errorCount*100/this.state.text.length);
+                this.setState({
+                    correct:(100-p).toFixed(2)
+                })
+            }
+
+            this.setState({
+                cursorClass: 'uncorrect-cursor'
+            })
         }
     }
-    /**
-        генератор случайного текста
-        параметры:
-            * language(обьязательный)язык на котором нужно вывести текст
-                допустимые значения: 'English' , 'Russian'
-            * второй параметр число(необьязательно) количество предложений в тексте
-        возвращемое значение: string
-     */
-    generateText(language) {
+    
+    // генератор случайного текста
+    generateText() {
 
-        let number = (arguments[1]) ? arguments[1] : 5;
+        let number = 2;
 
-        switch (language) {
+        switch (this.state.language) {
             case 'English': {
                 let param = "type=all-meat" + "&sentences=" + number + "&start-with-lorem=1";
 
@@ -45,6 +84,7 @@ class TypingSimulator extends React.Component {
                     this.setState({
                         text: result.data.join(),
                     })
+                    this.ifCorrectSymbol();
                     console.log("ответ с сервера получен");
                 })
 
@@ -60,21 +100,43 @@ class TypingSimulator extends React.Component {
                     this.setState({
                         text: result.data.text,
                     });
+                    this.ifCorrectSymbol();
                 })
                 break;
             }
         }
     }
+
+    restart(target){
+
+        // показать окно старта 
+        //сгенериовать текст
+        this.index=0;
+        this.generateText();
+        target.blur();
+    }
     
 
     componentDidMount() {
-        this.generateText(this.state.language, 1); //генерация случайного текста
+        this.generateText(); //генерация случайного текста
+        document.onkeydown = this.onKeyHandle;
     }
 
     render() {
         return (
             <div className="simulator">
-                <TextEditor onstart={this.onload} value={this.state.text} />
+                <TextEditor 
+                    prevChars={this.state.prevChars}
+                    currentChar={this.state.currentChar}
+                    nextChars={this.state.nextChars}
+                    cursorClass={this.state.cursorClass}
+                />
+                <div className="control">
+                    <div className="start">
+                        <button onClick={(event)=>this.restart(event.target)}>Заново</button>
+                    </div>
+                    <AccuracyIndicator value={this.state.correct} />
+                </div>
             </div>
         )
     }

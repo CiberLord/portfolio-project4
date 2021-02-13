@@ -1,12 +1,17 @@
 .simulator {
     max-width: 900px;
     margin: 0 auto;
-    padding: 30px 20px;
-    background-color: #fff;
+}
+.control{
+    display: flex;
 }
 
 .text__editor {
+    height: 300px;
+    padding: 30px 20px;
+    background-color: #fff;
     letter-spacing: 1px;
+    border-radius: 10px;
 }
 
 /* введенный текст */
