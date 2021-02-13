@@ -1,0 +1,37 @@
+.simulator {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    background-color: #fff;
+}
+
+.text__editor {
+    letter-spacing: 1px;
+}
+
+/* введенный текст */
+pre{
+    display: inline;
+    letter-spacing: none;
+    white-space: pre-wrap;
+    font-family: inherit;
+}
+
+
+.prev-chars {
+    color: rgb(152, 196, 94);
+}
+.next-chars {
+    color: rgb(75, 75, 75);
+}
+.correct-cursor {
+    color: #fff;
+    background-color: rgb(152, 196, 94);
+    border-radius: 2px;
+}
+
+.uncorrect-cursor {
+    color: #fff;
+    border-radius: 2px;
+    background-color: rgb(185, 34, 34);
+}

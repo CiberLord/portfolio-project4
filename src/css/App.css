@@ -1,6 +1,10 @@
-@import './fonts.css'; /* добавленгие шрифтов*/
+@import './fonts.css';
+/* добавленгие шрифтов*/
 
-body{
+*{
+    box-sizing: border-box;
+}
+body {
     background-color: rgb(110, 247, 235);
     font-family: 'Open Sans' sans-serif;
     font-weight: 400;
