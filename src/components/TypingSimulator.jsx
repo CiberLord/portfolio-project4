@@ -125,8 +125,10 @@ class TypingSimulator extends React.Component {
     }
     //открыть стартовое диалоговое окно
     openStartDialog() {
+
         this.setState({
-            dialogVisible: true
+            dialogVisible: true,
+            isStart: false
         })
     }
 
@@ -145,27 +147,29 @@ class TypingSimulator extends React.Component {
 
     render() {
         return (
-            <div className="simulator">
-                <TextEditor
-                    isStart={this.state.isStart}
-                    prevChars={this.state.prevChars}
-                    currentChar={this.state.currentChar}
-                    nextChars={this.state.nextChars}
-                    cursorClass={this.state.cursorClass}
-                />
-                <div className="control">
-                    <div className="run">
-                        <i className="restart-icon"></i>
-                        <button onClick={() => this.openStartDialog()}>{(this.state.isStart)?'Начать':'Заново'}</button>
-                    </div>
-                    <AccuracyIndicator value={this.state.correct} />
-                    <SpeedIndicator value={this.state.speed} />
-                    <Dialog
-                        visible={this.state.dialogVisible}
-                        language={this.state.language}
-                        setLang={(lang) => this.setLang(lang)}
-                        start={() => this.startTyping()}
+            <div className="container">
+                <div className="simulator">
+                    <TextEditor
+                        isStart={this.state.isStart}
+                        prevChars={this.state.prevChars}
+                        currentChar={this.state.currentChar}
+                        nextChars={this.state.nextChars}
+                        cursorClass={this.state.cursorClass}
                     />
+                    <div className="control">
+                        <div className="run">
+                            <i className="restart-icon"></i>
+                            <button onClick={() => this.openStartDialog()}>{(this.state.isStart) ? 'Начать' : 'Заново'}</button>
+                        </div>
+                        <AccuracyIndicator value={this.state.correct} />
+                        <SpeedIndicator value={this.state.speed} />
+                        <Dialog
+                            visible={this.state.dialogVisible}
+                            language={this.state.language}
+                            setLang={(lang) => this.setLang(lang)}
+                            start={() => this.startTyping()}
+                        />
+                    </div>
                 </div>
             </div>
         )

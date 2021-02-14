@@ -18,6 +18,14 @@ class TextEditor extends React.Component {
     }
 
     render() {
+        
+        if(this.props.isStart){
+            return (
+                <div className={"text__editors "+"start-text"}>
+                    Кликни на кнопку "Начать" и увидишь магию:)
+                </div>
+            )
+        }
         return (
             <div className="text__editor">
                 <pre className="prev-chars">{this.props.prevChars}</pre>
