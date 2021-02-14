@@ -50,16 +50,27 @@ pre {
     padding: 30px 30px;
 }
 
-.restart button {
+.run button {
     background-color: transparent;
     outline: none;
     border: none;
-    width: 40px;
-    height: 40px;
+    font-size: 20px;
+    color: #909090;
     cursor: pointer;
-    background-image: url(../images/update-arrow.svg);
+}
+.run button:hover{
+    color: rgb(109, 66, 122);
+}
+.run i{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    background-image: url(../images/reset.svg);
     background-repeat: no-repeat;
     background-size: contain;
+    vertical-align: center;
+    margin-right: 5px;
 }
 
 .accuracy{

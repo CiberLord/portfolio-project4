@@ -6,6 +6,7 @@ import '../css/simulator.css'
 import TextEditor from './TextEditor';
 import AccuracyIndicator from './AccuracyIndicator';
 import SpeedIndicator from './SpeedIndicator';
+import Dialog from './Dialog';
 
 /*
     именно тут будет храниться все основные состояния приложения
@@ -20,17 +21,20 @@ class TypingSimulator extends React.Component {
         super(props);
 
         this.state = {
-            text: '',//полученный текст
-            language: 'Russian',//язык текстаs
+            text: 'нажми кнопку нажать и увидишь магию:)',//полученный текст
+            language: 'Русский язык',//язык текстаs
             currentChar: '',//символ который нужно ввести(положение курсора)
             prevChars: '',//введенные символы
             nextChars: '',//не введенные символы
-            correct: 100
+            correct: 100, //корректно введенные символы в процентах
+            speed: 0, // скорость печати
+            dialogVisible: false, //флаг для показа\скрытия диалогового окна
+            isStart: true //первый запуск приложения
         }
         this.index = 0;//позиция курсора
-        this.errorCount = 0;
-        this.corrected = true;
-        this.onKeyHandle = this.onKeyHandle.bind(this);
+        this.errorCount = 0; //подсчет количества не правильно нажатых символов
+        this.corrected = true; //спец флаг чтобы предовратить бесконечный подсчет ошибок
+        this.onKeyHandle = this.onKeyHandle.bind(this); //привязка обработчика клавиатурного ввода
 
     }
 
@@ -69,6 +73,13 @@ class TypingSimulator extends React.Component {
         }
     }
 
+    //изменить язык текста
+    setLang(lang) {
+        this.setState({
+            language: lang
+        })
+    }
+
     // генератор случайного текста
     generateText() {
 
@@ -83,6 +94,9 @@ class TypingSimulator extends React.Component {
                     // изменение текста 
                     this.setState({
                         text: result.data.join(),
+                        dialogVisible: false,
+                        correct: 100,
+                        speed: 0
                     })
                     this.ifCorrectSymbol();
                     console.log("ответ с сервера получен");
@@ -90,7 +104,7 @@ class TypingSimulator extends React.Component {
 
                 break;
             }
-            case 'Russian': {
+            case 'Русский язык': {
                 var params = '&type=sentence&number=' + number;
 
                 // отправка запроса на сервер
@@ -99,6 +113,9 @@ class TypingSimulator extends React.Component {
                     // изменение текста 
                     this.setState({
                         text: result.data.text,
+                        dialogVisible: false,
+                        correct: 100,
+                        speed: 0
                     });
                     this.ifCorrectSymbol();
                 })
@@ -106,19 +123,23 @@ class TypingSimulator extends React.Component {
             }
         }
     }
+    //открыть стартовое диалоговое окно
+    openStartDialog() {
+        this.setState({
+            dialogVisible: true
+        })
+    }
 
-    restart(target) {
-
-        // показать окно старта 
-        //сгенериовать текст
+    // генерация нового текста и старт 
+    startTyping() {
         this.index = 0;
+        this.errorCount = 0;
         this.generateText();
-        target.blur();
     }
 
 
     componentDidMount() {
-        this.generateText(); //генерация случайного текста
+        // this.generateText(); //генерация случайного текста
         document.onkeydown = this.onKeyHandle;
     }
 
@@ -126,18 +147,25 @@ class TypingSimulator extends React.Component {
         return (
             <div className="simulator">
                 <TextEditor
+                    isStart={this.state.isStart}
                     prevChars={this.state.prevChars}
                     currentChar={this.state.currentChar}
                     nextChars={this.state.nextChars}
                     cursorClass={this.state.cursorClass}
                 />
                 <div className="control">
-                    <div className="restart">
+                    <div className="run">
                         <i className="restart-icon"></i>
-                        <button onClick={(event) => this.restart(event.target)}></button>
+                        <button onClick={() => this.openStartDialog()}>{(this.state.isStart)?'Начать':'Заново'}</button>
                     </div>
                     <AccuracyIndicator value={this.state.correct} />
-                    <SpeedIndicator value={0}/>
+                    <SpeedIndicator value={this.state.speed} />
+                    <Dialog
+                        visible={this.state.dialogVisible}
+                        language={this.state.language}
+                        setLang={(lang) => this.setLang(lang)}
+                        start={() => this.startTyping()}
+                    />
                 </div>
             </div>
         )
