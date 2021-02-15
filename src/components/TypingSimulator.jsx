@@ -30,7 +30,7 @@ class TypingSimulator extends React.Component {
             correct: 100, //корректно введенные символы в процентах
             speed: 0, // скорость печати
             dialogVisible: false, //флаг для показа\скрытия диалогового окна
-            resultDVisible: true, //флаг для показа\скрытия результирующего окна
+            resultDVisible: false, //флаг для показа\скрытия результирующего окна
             isStart: true //первый запуск приложения
         }
         this.index = 0;//позиция курсора
@@ -124,9 +124,9 @@ class TypingSimulator extends React.Component {
     }
 
     // генератор случайного текста
-    generateText(lan) {
+    generateText() {
 
-        let number = 1;//количество предложени
+        let number = 2;//количество предложени
         let apiPath = '';
         if (this.state.language === 'English') {
             apiPath = 'https://baconipsum.com/api/?type=all-meat&sentences=' + number + '&start-with-lorem=1';
@@ -137,17 +137,22 @@ class TypingSimulator extends React.Component {
         //отправка запроса к апи
         axios.get(apiPath).then(result => {
             // изменение текста 
-
-            this.setState({
-                text: (result.data.text) ? result.data.text : result.data.join(),
-                dialogVisible: false,
-                resultDVisible: false,
-                isStart: false,
-                correct: 100,
-                speed: 0
-            });
-            this.ifCorrectSymbol();
-            console.log("ответ с сервера получен");
+            let text = (result.data.text) ? result.data.text : result.data.join();
+            if (text.length < 200) {
+                this.generateText();
+            } else {
+                console.log(text.length);
+                this.setState({
+                    text: text,
+                    dialogVisible: false,
+                    resultDVisible: false,
+                    isStart: false,
+                    correct: 100,
+                    speed: 0
+                });
+                this.ifCorrectSymbol();
+                console.log("ответ с сервера получен");
+            }
         })
     }
     //открыть стартовое диалоговое окно
@@ -161,7 +166,7 @@ class TypingSimulator extends React.Component {
             dialogVisible: true
         })
     }
-    openResultDialog(){
+    openResultDialog() {
         this.setStart()
     }
 
@@ -202,7 +207,7 @@ class TypingSimulator extends React.Component {
                     />
                     <div className="control">
                         <div className="run">
-                            <i className="restart-icon"></i>
+                            <i className={(this.state.isStart) ? 'start-icon' : 'restart-icon'}></i>
                             <button onClick={() => this.openStartDialog()}>{(this.state.isStart) ? 'Начать' : 'Заново'}</button>
                         </div>
                         <AccuracyIndicator value={this.state.correct} />

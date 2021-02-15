@@ -4,7 +4,7 @@
 }
 
 .text__editor {
-    height: 300px;
+    min-height: 200px;
     padding: 30px 20px;
     background-color: #fff;
     letter-spacing: 1px;
@@ -79,7 +79,7 @@ pre {
     vertical-align: center;
     margin-right: 5px;
 }
-.reset-icon{
+.restart-icon{
     background-image: url(../images/reset.svg);
 }
 .start-icon{
