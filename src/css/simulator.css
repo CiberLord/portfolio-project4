@@ -93,26 +93,25 @@ pre {
 }
 .accuracy p{
     position: relative;
-    padding-left: 30px;
 }
 .accuracy-icon::before{
     content: '';
     width: 20px;
     height: 20px;
     position: absolute;
-    left: 0px;
+    left: -30px;
     top: 50%;
     transform: translateY(-50%);
     background-image: url(../images/accuracy.svg);
     background-repeat: no-repeat;
     background-size: contain;
 }
-.speed-icon{
+.speed-icon::before{
     content: '';
     width: 20px;
     height: 20px;
     position: absolute;
-    left: 0px;
+    left: -30px;
     top: 50%;
     transform: translateY(-50%);
     background-image: url(../images/pencil.svg);

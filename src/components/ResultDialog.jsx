@@ -26,6 +26,9 @@ class ResultDialog extends React.Component{
                                 <div className="rd-i">
                                     <div>точность: {this.props.correct}%</div>
                                 </div>
+                                <div className="rd-i">
+                                    <div>время: {this.props.time}</div>
+                                </div>
                             </div>
                             <div className="row ">
                                 <button className="start-button exit-button" onClick={()=>this.props.begin()}>Выход</button>

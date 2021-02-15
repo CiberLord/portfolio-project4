@@ -1,4 +1,6 @@
 .modal-bg{
+    opacity: 0;
+    transition: opacity 10s ease-in;
     position: fixed;
     top:0px;
     left: 0px;
@@ -9,28 +11,11 @@
     align-items: center;
     background-color: rgba(0,0,0,0.7);
 }
-.modal-bg.entering{
-    animation: bg-show .4s forwards;
+.show{
+    transition: opacity 10s ease-in;
+    opacity: 0.3;
 }
-@keyframes bg-show{
-    from{
-        opacity: 0;
-    }
-    to{
-        opacity: 1;
-    }
-}
-.modal-bg.exiting{
-    animation: bg-close .4s forwards;
-}
-@keyframes bg-close{
-    from{
-        opacity: 1;
-    }
-    to{
-        opacity: 0;
-    }
-}
+
 
 .dialog-container{
     padding: 40px 200px;

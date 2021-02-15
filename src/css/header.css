@@ -24,7 +24,7 @@
 .menu{
     height: 100%;
     display: flex;
-    align-items: stretch;
+    align-items: center;
 }
 .info-button,.main-button{
     display: block;
@@ -56,4 +56,22 @@
 }
 .link-active{
     color: rgb(39, 236, 39);
+}
+.item{
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin:0px 7px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.vk{
+    background-image: url(../images/vk.svg);
+}
+.gmail{
+    background-image: url(../images/gmail.svg);
+}
+.cal{
+    background-image: url(../images/call.svg);
 }

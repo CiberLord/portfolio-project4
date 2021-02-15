@@ -7,6 +7,7 @@ import AccuracyIndicator from './AccuracyIndicator';
 import SpeedIndicator from './SpeedIndicator';
 import Dialog from './Dialog';
 import ResultDialog from './ResultDialog';
+import Timer from './Timer';
 
 /*
     именно тут будет храниться все основные состояния приложения
@@ -30,16 +31,18 @@ class TypingSimulator extends React.Component {
             speed: 0, // скорость печати
             dialogVisible: false, //флаг для показа\скрытия диалогового окна
             resultDVisible: false, //флаг для показа\скрытия результирующего окна
-            isStart: true //первый запуск приложения
+            isStart: true, //первый запуск приложения
+            seconds: 0,
+            minutes: 0 //таймер
         }
         this.index = 0;//позиция курсора
         this.errorCount = 0; //подсчет количества не правильно нажатых символов
         this.corrected = true; //спец флаг чтобы предовратить бесконечный подсчет ошибок
 
         this.ready = true; //старт таймера
-        this.startTime = 0; // стартове время
+        this.startTime = 0; // стартове время        
         this.spList = [0]; //список изменений скорости
-
+        this.countTime=0;
         this.onKeyHandle = this.onKeyHandle.bind(this); //привязка обработчика клавиатурного ввода
     }
 
@@ -58,25 +61,45 @@ class TypingSimulator extends React.Component {
 
     // обработка клавиатурного ввода
     onKeyHandle(event) {
-        //запуск таймера
-        if (this.ready) {
-            console.log('timer enable');
-            this.startTime = performance.now() / 1000;
-            this.ready = false;
-
-            //измеряет скорость каждую секундку
-            this.timerId = setInterval(() => {
-                let currentSpeed = Math.round(this.index * 60 / ((performance.now() / 1000) - this.startTime))
-                this.spList.push(currentSpeed);
-                this.setState({
-                    speed: currentSpeed
-                })
-                this.lastIndex = this.index;
-            }, 1400)
-        }
-
+        
         //проверка введенного символа на соответсвие
         if (event.key === this.state.currentChar) {
+            
+            //запуск таймеров
+            if (this.ready) {
+                console.log('timer enable');
+                this.startTime = performance.now() / 1000;
+                this.ready = false;
+    
+                this.tId=setInterval(()=>{
+                    let currenttime=performance.now();
+                    if(currenttime-this.countTime>=1000){
+                        this.countTime=currenttime;
+                        if(this.state.seconds===59){
+                            this.setState(prevState=>({
+                                seconds:0,
+                                minutes:prevState.minutes+1
+                            }))
+                        }else{
+                            this.setState(prevState=>({
+                                seconds: prevState.seconds+1
+                            }))
+                        }
+                    }
+                
+                },100)
+                //измеряет скорость каждую секундку
+                this.timerId = setInterval(() => {
+                    let currentSpeed = Math.round(this.index * 60 / ((performance.now() / 1000) - this.startTime))
+                    this.spList.push(currentSpeed);
+                    this.setState({
+                        speed: currentSpeed
+                    })
+                    this.lastIndex = this.index;
+                }, 1400)
+            }
+    
+
             this.corrected = true;
             this.ifCorrectSymbol(this.props.value);
 
@@ -86,7 +109,7 @@ class TypingSimulator extends React.Component {
 
                 this.ready = true;//вернуть начало таймера подсчета скорости
                 clearInterval(this.timerId);//отключить измерение скорости
-
+                clearInterval(this.tId);
                 //измерение общей скорости
                 let midSpeed = Math.round(this.spList.reduce((sum, cur) => sum + cur, 0) / this.spList.length);
                 console.log(midSpeed);
@@ -97,8 +120,8 @@ class TypingSimulator extends React.Component {
                 document.onkeydown = null;
             }
 
-        } else if (event.key !== 'Shift') {
-            // this.lasttime=this.lasttime-0.1
+        } else if (event.key !== 'Shift'||event.key !== 'CapsLock') {
+
             //подсчет количества ошибок
             if (this.corrected) {
                 this.corrected = false;
@@ -158,16 +181,12 @@ class TypingSimulator extends React.Component {
         /*
             эта функция выходит из режима печати и отключает таймеры, открывает окно для генерации нового текста
          */
+        clearInterval(this.tId);
         clearInterval(this.timerId);
         document.onkeydown = null;
         this.setState({
             dialogVisible: true
         })
-    }
-
-    //открыть результат
-    openResultDialog() {
-        this.setStart()
     }
 
     // генерация нового текста и переход в режим печати
@@ -207,6 +226,7 @@ class TypingSimulator extends React.Component {
                             <i className={(this.state.isStart) ? 'start-icon' : 'restart-icon'}></i>
                             <button onClick={() => this.openStartDialog()}>{(this.state.isStart) ? 'Начать' : 'Заново'}</button>
                         </div>
+                        <Timer minite={this.state.minutes} second={this.state.seconds}/>
                         <AccuracyIndicator value={this.state.correct} />
                         <SpeedIndicator value={this.state.speed} />
                         <Dialog
@@ -220,6 +240,7 @@ class TypingSimulator extends React.Component {
                             visible={this.state.resultDVisible}
                             correct={this.state.correct}
                             speed={this.state.speed}
+                            time={this.state.minutes+":"+this.state.seconds}
                         />
                     </div>
                 </div>

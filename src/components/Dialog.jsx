@@ -13,6 +13,7 @@ class Dialog extends React.Component {
         this.state = {
             langList: false //флаг 
         }
+        this.d = React.createRef();
     }
     //показать или скрыть спико выбра текста
     triggeLangList() {
@@ -22,6 +23,7 @@ class Dialog extends React.Component {
 
     }
     startTyping() {
+        console.log(this.d.current);
         this.props.start();
     }
 
@@ -30,28 +32,33 @@ class Dialog extends React.Component {
         this.props.setLang(lang);
         this.triggeLangList();
     }
+    
+    componentDidUpdate(){
+        this.d.current.classList.add('show');
+    }
 
     render() {
         if (this.props.visible) {//диалогове окно открывается
-        return (
-            <Portal>
-                <div className="modal-bg ">
-                            <div className="dialog-container">
-                                <div className="lang-menu">
-                                    <div onClick={() => this.triggeLangList()}>{this.props.language}<i className="lang-list-icon"></i></div>
-                                    {this.state.langList &&
-                                        <ul className="lang-type">
-                                            <li onClick={(event) => this.setLang(event.target.textContent)}>English</li>
-                                            <li onClick={(event) => this.setLang(event.target.textContent)}>Русский язык</li>
-                                        </ul>
-                                    }
-                                </div>
-                                <h2 className="dialog-title">Приготовься печатать. Жми!</h2>
-                                <button className="start-button" onClick={() => this.startTyping()}>Начать</button>
+        
+            return (
+                <Portal>
+                    <div ref={this.d} className="modal-bg ">
+                        <div className="dialog-container">
+                            <div className="lang-menu">
+                                <div onClick={() => this.triggeLangList()}>{this.props.language}<i className="lang-list-icon"></i></div>
+                                {this.state.langList &&
+                                    <ul className="lang-type">
+                                        <li onClick={(event) => this.setLang(event.target.textContent)}>English</li>
+                                        <li onClick={(event) => this.setLang(event.target.textContent)}>Русский язык</li>
+                                    </ul>
+                                }
                             </div>
+                            <h2 className="dialog-title">Приготовься печатать. Жми!</h2>
+                            <button className="start-button" onClick={() => this.startTyping()}>Начать</button>
                         </div>
-            </Portal>
-        )
+                    </div>
+                </Portal>
+            )
         } else {
             return null;
         }
