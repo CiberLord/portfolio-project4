@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import { icon } from '../images/reset.svg';
 import '../css/simulator.css'
 import TextEditor from './TextEditor';
 import AccuracyIndicator from './AccuracyIndicator';
@@ -116,7 +115,7 @@ class TypingSimulator extends React.Component {
         }
     }
 
-    //изменить язык текста
+    //изменить язык нового текста
     setLang(lang) {
         this.setState({
             language: lang
@@ -147,8 +146,7 @@ class TypingSimulator extends React.Component {
                     dialogVisible: false,
                     resultDVisible: false,
                     isStart: false,
-                    correct: 100,
-                    speed: 0
+                    correct: 100
                 });
                 this.ifCorrectSymbol();
                 console.log("ответ с сервера получен");
@@ -166,6 +164,8 @@ class TypingSimulator extends React.Component {
             dialogVisible: true
         })
     }
+
+    //открыть результат
     openResultDialog() {
         this.setStart()
     }
@@ -184,14 +184,11 @@ class TypingSimulator extends React.Component {
         document.onkeydown = this.onKeyHandle;
         this.errorCount = 0;
         this.setState({
+            speed: 0,
+            correct: 0,
             isStart: true,
             resultDVisible: false
         });
-    }
-
-
-    componentDidMount() {
-
     }
 
     render() {

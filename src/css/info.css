@@ -1,0 +1,19 @@
+.info{
+    background-color: #fff;
+    padding: 60px 30px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 100px;
+}
+.info h1{
+    font-size: 32px;
+    color: rgb(91, 37, 136);
+}
+.info img{
+    display: block;
+    width: 80%;
+    margin: 60px auto;
+}
+.info p{
+    text-align: left;
+}

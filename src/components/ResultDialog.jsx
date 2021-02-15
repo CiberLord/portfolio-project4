@@ -21,10 +21,10 @@ class ResultDialog extends React.Component{
                             <h2 className="dialog-title">Завершено</h2>
                             <div className="row">
                                 <div className="rd-i">
-                                    <div>средняя скорость: {this.props.speed}</div>
+                                    <div>средняя скорость: {this.props.speed}симв/мин</div>
                                 </div>
                                 <div className="rd-i">
-                                    <div>точность: {this.props.correct}</div>
+                                    <div>точность: {this.props.correct}%</div>
                                 </div>
                             </div>
                             <div className="row ">

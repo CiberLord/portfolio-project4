@@ -1,25 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import '../css/header.css'
+import { NavLink } from 'react-router-dom';
 
-
-class Header extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-
-    render() {
-        return (
-            <header className="header">
-                <div className="container">
-                    <div className="row">
-                        <div className="logo"></div>
-                        <div className="info">Справка</div>
+//шапка приложения
+function Header(props) {
+    return (
+        <header className="header">
+            <div className="container">
+                <div className="row">
+                    <div className="logo"></div>
+                    <div className="menu">
+                        <NavLink activeClassName="link-active" className="main-button" to="/home">Тренажер</NavLink>
+                        <NavLink activeClassName="link-active" className="info-button" to="info">Справка</NavLink>
                     </div>
                 </div>
-            </header>
-        )
-    }
+            </div>
+        </header>
+    )
 }
 export default Header;
