@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-
+import {icon} from '../images/reset.svg';
 import '../css/simulator.css'
 import TextEditor from './TextEditor';
 import AccuracyIndicator from './AccuracyIndicator';
 import SpeedIndicator from './SpeedIndicator';
 import Dialog from './Dialog';
+import ResultDialog from './ResultDialog';
 
 /*
     именно тут будет храниться все основные состояния приложения
@@ -29,6 +30,7 @@ class TypingSimulator extends React.Component {
             correct: 100, //корректно введенные символы в процентах
             speed: 0, // скорость печати
             dialogVisible: false, //флаг для показа\скрытия диалогового окна
+            resultDVisible: false, //флаг для показа\скрытия результирующего окна
             isStart: true //первый запуск приложения
         }
         this.index = 0;//позиция курсора
@@ -40,13 +42,21 @@ class TypingSimulator extends React.Component {
 
     // метод вызывается при правильном вводе символа: переводит курсор на следующий символ
     ifCorrectSymbol() {
-        this.setState({
-            prevChars: this.state.text.slice(0, this.index),
-            currentChar: this.state.text.charAt(this.index),
-            nextChars: this.state.text.slice(this.index + 1),
-            cursorClass: 'correct-cursor'
-        });
-        this.index++;
+        
+        // если текст полностью набран
+        if (this.index===this.state.text.length) {
+            this.setState({
+                resultDVisible: true
+            })
+        } else { //иначе продолжить набор
+            this.setState({
+                prevChars: this.state.text.slice(0, this.index),
+                currentChar: this.state.text.charAt(this.index),
+                nextChars: this.state.text.slice(this.index + 1),
+                cursorClass: 'correct-cursor'
+            });
+            this.index++;
+        }
     }
 
     // обработка клавиатурного ввода-
@@ -83,7 +93,7 @@ class TypingSimulator extends React.Component {
     // генератор случайного текста
     generateText() {
 
-        let number = 2;
+        let number = 1;//количество предложений
 
         switch (this.state.language) {
             case 'English': {
@@ -95,11 +105,13 @@ class TypingSimulator extends React.Component {
                     this.setState({
                         text: result.data.join(),
                         dialogVisible: false,
+                        resultDVisible: false,
+                        isStart:false,
                         correct: 100,
                         speed: 0
                     })
                     this.ifCorrectSymbol();
-                    console.log("ответ с сервера получен");
+                    console.log("ответ с сервера получен, количество символов:" + result.data.join().length);
                 })
 
                 break;
@@ -109,11 +121,13 @@ class TypingSimulator extends React.Component {
 
                 // отправка запроса на сервер
                 axios.get('https://fish-text.ru/get?' + params).then(result => {
-                    console.log("ответ с сервера получен");
+                    console.log("ответ с сервера получен  количество символов:" + result.data.text.length);
                     // изменение текста 
                     this.setState({
                         text: result.data.text,
                         dialogVisible: false,
+                        resultDVisible: false,
+                        isStart:false,
                         correct: 100,
                         speed: 0
                     });
@@ -127,8 +141,7 @@ class TypingSimulator extends React.Component {
     openStartDialog() {
 
         this.setState({
-            dialogVisible: true,
-            isStart: false
+            dialogVisible: true
         })
     }
 
@@ -137,6 +150,13 @@ class TypingSimulator extends React.Component {
         this.index = 0;
         this.errorCount = 0;
         this.generateText();
+    }
+    setStart() {
+        console.log("exit")
+        this.setState({
+            isStart: true,
+            resultDVisible: false
+        })
     }
 
 
@@ -158,7 +178,7 @@ class TypingSimulator extends React.Component {
                     />
                     <div className="control">
                         <div className="run">
-                            <i className="restart-icon"></i>
+                            <i  className="restart-icon"></i>
                             <button onClick={() => this.openStartDialog()}>{(this.state.isStart) ? 'Начать' : 'Заново'}</button>
                         </div>
                         <AccuracyIndicator value={this.state.correct} />
@@ -168,6 +188,11 @@ class TypingSimulator extends React.Component {
                             language={this.state.language}
                             setLang={(lang) => this.setLang(lang)}
                             start={() => this.startTyping()}
+                        />
+                        <ResultDialog
+                            start={() => this.startTyping()}
+                            begin={() => this.setStart()}
+                            visible={this.state.resultDVisible}
                         />
                     </div>
                 </div>

@@ -1,27 +1,28 @@
 @import './fonts.css';
 /* добавленгие шрифтов*/
 
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
+
 body {
     background-color: #e2e2e2;
     font-family: 'Open Sans' sans-serif;
     font-weight: 400;
     font-size: 24px;
 }
-@media(max-width: 1400px){
-    .container{
-        max-width: 1200px;
-        padding-left: 20px;
-        padding-right: 20px;
-        margin: 0 auto;
-    }
+
+.container {
+    max-width: 1200px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: 0 auto;
 }
-@media(max-width: 1300px){
-    .container{
+
+@media(max-width: 1300px) {
+    .container {
         max-width: 950px;
         padding-left: 20px;
         padding-right: 20px;
@@ -29,7 +30,6 @@ body {
     }
 }
 
-
-.row{
+.row {
     display: flex;
 }

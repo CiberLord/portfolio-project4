@@ -13,6 +13,7 @@
     padding: 40px 200px;
     text-align: center;
     background-color: #fff;
+    border-radius: 8px;
 }
 
 .dialog-title{
@@ -64,4 +65,8 @@
     background-size: contain;
     background-position:  center;
     margin-left: 5px;
+}
+
+.dialog-container .row{
+    justify-content: center;
 }
