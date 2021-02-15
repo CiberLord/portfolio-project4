@@ -74,11 +74,16 @@ pre {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    background-image: url(../images/reset.svg);
     background-repeat: no-repeat;
     background-size: contain;
     vertical-align: center;
     margin-right: 5px;
+}
+.reset-icon{
+    background-image: url(../images/reset.svg);
+}
+.start-icon{
+    background-image: url(../images/start-icon.svg);
 }
 
 .accuracy{

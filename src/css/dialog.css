@@ -70,3 +70,12 @@
 .dialog-container .row{
     justify-content: center;
 }
+
+.rd-i{
+    font-size: 20px;
+    color: rgb(104, 104, 104);
+    margin: 20px 30px;
+}
+.exit-button{
+    background-color: rgb(146, 89, 163);
+}

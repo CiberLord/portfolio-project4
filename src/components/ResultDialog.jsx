@@ -21,16 +21,14 @@ class ResultDialog extends React.Component{
                             <h2 className="dialog-title">Завершено</h2>
                             <div className="row">
                                 <div className="rd-i">
-                                    <div>средняя скорость:</div>
-                                    <div>{this.props.speed}</div>
+                                    <div>средняя скорость: {this.props.speed}</div>
                                 </div>
                                 <div className="rd-i">
-                                    <div>точность:</div>
-                                    <div>{this.props.correct}</div>
+                                    <div>точность: {this.props.correct}</div>
                                 </div>
                             </div>
                             <div className="row ">
-                                <button className="start-button" onClick={()=>this.props.begin()}>Вернуться</button>
+                                <button className="start-button exit-button" onClick={()=>this.props.begin()}>Выход</button>
                             </div>
                         </div>
                     </div>
