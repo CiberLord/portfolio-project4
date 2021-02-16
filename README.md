@@ -15,7 +15,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### npm start
 
-и откройте в браузере путь localhost:3000/
+и откройте в браузере путь localhost:3000
 
 
 

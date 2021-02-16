@@ -1,20 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import '../css/dialog.css';
 import Portal from './Portal';
+import {CSSTransition} from 'react-transition-group';
 
-
-class ResultDialog extends React.Component{
-    constructor(props){
+class ResultDialog extends React.Component {
+    constructor(props) {
         super(props);
 
 
     }
 
-    render(){
-
-        if(this.props.visible){
-            return (
+    render() {
+        return (
+            <CSSTransition
+                in={this.props.visible}
+                timeout={300}
+                classNames="modal-bg"
+                mountOnEnter
+                unmountOnExit
+            >
                 <Portal>
                     <div className="modal-bg">
                         <div className="dialog-container">
@@ -31,15 +35,13 @@ class ResultDialog extends React.Component{
                                 </div>
                             </div>
                             <div className="row ">
-                                <button className="start-button exit-button" onClick={()=>this.props.begin()}>Выход</button>
+                                <button className="start-button exit-button" onClick={() => this.props.begin()}>Выход</button>
                             </div>
                         </div>
                     </div>
                 </Portal>
-            )
-        }else{
-            return null;
-        }
+            </CSSTransition>
+        )  
     }
 
 }

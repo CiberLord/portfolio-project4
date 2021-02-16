@@ -1,6 +1,4 @@
 .modal-bg{
-    opacity: 0;
-    transition: opacity 10s ease-in;
     position: fixed;
     top:0px;
     left: 0px;
@@ -11,9 +9,33 @@
     align-items: center;
     background-color: rgba(0,0,0,0.7);
 }
-.show{
-    transition: opacity 10s ease-in;
-    opacity: 0.3;
+.modal-bg-enter{
+    opacity: 0;
+}
+.modal-bg-enter .dialog-container{
+    transform: translateY(-100%);
+}
+.modal-bg-enter-active{
+    opacity: 1;
+    transition: opacity 300ms;
+}
+.modal-bg-enter-active .dialog-container{
+    transform: translateY(0);
+    transition: transform 300ms;
+}
+.modal-bg-exit{
+    opacity: 1;
+}
+.modal-bg-exit .dialog-container{
+    transform: translateY(0%);
+}
+.modal-bg-exit-active{
+    opacity: 0;
+    transition: opacity 300ms;
+}
+.modal-bg-exit-active .dialog-container{
+    transform: translateY(-100%);
+    transition: transform 300ms;
 }
 
 

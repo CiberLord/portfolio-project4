@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import '../css/dialog.css';
 import Portal from './Portal';
+import { CSSTransition } from 'react-transition-group';
 
 
 //диалоговое окно которое будет срабатывать при рестарте и нажатии на кнопку начать
@@ -13,7 +13,6 @@ class Dialog extends React.Component {
         this.state = {
             langList: false //флаг 
         }
-        this.d = React.createRef();
     }
     //показать или скрыть спико выбра текста
     triggeLangList() {
@@ -23,7 +22,6 @@ class Dialog extends React.Component {
 
     }
     startTyping() {
-        console.log(this.d.current);
         this.props.start();
     }
 
@@ -32,17 +30,23 @@ class Dialog extends React.Component {
         this.props.setLang(lang);
         this.triggeLangList();
     }
-    
-    componentDidUpdate(){
-        this.d.current.classList.add('show');
+
+    componentDidUpdate() {
+
     }
 
     render() {
-        if (this.props.visible) {//диалогове окно открывается
-        
-            return (
+
+        return (
+            <CSSTransition
+                in={this.props.visible}
+                timeout={300}
+                classNames="modal-bg"
+                mountOnEnter
+                unmountOnExit
+            >
                 <Portal>
-                    <div ref={this.d} className="modal-bg ">
+                    <div className="modal-bg">
                         <div className="dialog-container">
                             <div className="lang-menu">
                                 <div onClick={() => this.triggeLangList()}>{this.props.language}<i className="lang-list-icon"></i></div>
@@ -58,10 +62,8 @@ class Dialog extends React.Component {
                         </div>
                     </div>
                 </Portal>
-            )
-        } else {
-            return null;
-        }
+            </CSSTransition>
+        )
     }
 }
 export default Dialog;
