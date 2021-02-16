@@ -9,12 +9,9 @@ import Dialog from './Dialog';
 import ResultDialog from './ResultDialog';
 import Timer from './Timer';
 
+
 /*
-    именно тут будет храниться все основные состояния приложения
-        - измерение скорости печати
-        - показание вводимого текста в реальном времени
-        - обработчик клавиатурного ввода
-        - измерение точности ввода
+    этот компонент отвечает за точность , скорость печати, набора текста, таймера и ...
 */
 
 class TypingSimulator extends React.Component {
@@ -22,8 +19,8 @@ class TypingSimulator extends React.Component {
         super(props);
 
         this.state = {
-            text: 'нажми кнопку нажать и увидишь магию:)',//полученный текст
-            language: 'Русский язык',//язык текстаs
+            text: '',//полученный текстначать
+            language: 'Русский язык',//язык текста
             currentChar: '',//символ который нужно ввести(положение курсора)
             prevChars: '',//введенные символы
             nextChars: '',//не введенные символы
@@ -42,7 +39,7 @@ class TypingSimulator extends React.Component {
         this.ready = true; //старт таймера
         this.startTime = 0; // стартове время        
         this.spList = [0]; //список изменений скорости
-        this.countTime=0;
+        this.countTime=0; //счетчик таймера
         this.onKeyHandle = this.onKeyHandle.bind(this); //привязка обработчика клавиатурного ввода
     }
 
@@ -88,7 +85,7 @@ class TypingSimulator extends React.Component {
                     }
                 
                 },100)
-                //измеряет скорость каждую секундку
+                //измеряет скорость каждые 2секунды
                 this.timerId = setInterval(() => {
                     let currentSpeed = Math.round(this.index * 60 / ((performance.now() / 1000) - this.startTime))
                     this.spList.push(currentSpeed);
@@ -96,7 +93,7 @@ class TypingSimulator extends React.Component {
                         speed: currentSpeed
                     })
                     this.lastIndex = this.index;
-                }, 1400)
+                }, 2000)
             }
     
 
@@ -120,7 +117,7 @@ class TypingSimulator extends React.Component {
                 document.onkeydown = null;
             }
 
-        } else if (event.key !== 'Shift'||event.key !== 'CapsLock') {
+        } else if (event.key !== 'Shift') {
 
             //подсчет количества ошибок
             if (this.corrected) {
@@ -206,7 +203,9 @@ class TypingSimulator extends React.Component {
             speed: 0,
             correct: 0,
             isStart: true,
-            resultDVisible: false
+            resultDVisible: false,
+            seconds: 0,
+            minutes: 0
         });
     }
 

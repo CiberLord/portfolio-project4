@@ -31,10 +31,6 @@ class Dialog extends React.Component {
         this.triggeLangList();
     }
 
-    componentDidUpdate() {
-
-    }
-
     render() {
 
         return (

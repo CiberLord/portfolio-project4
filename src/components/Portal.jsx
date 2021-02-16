@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 
-//портал для добавления диалогового окна и всплвающих окон
+//портал для добавления диалогового окна
 class Portal extends React.Component {
     constructor(props) {
         super(props);

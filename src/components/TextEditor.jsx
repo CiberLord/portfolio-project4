@@ -8,7 +8,7 @@ function TextEditor(props){
     if(props.isStart){
         return (
             <div className={"text__editors "+"start-text"}>
-                Кликни на кнопку "Начать" и увидишь магию:)
+                Кликни на кнопку "Начать":)
             </div>
         )
     }
